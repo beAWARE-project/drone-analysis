@@ -1,17 +1,17 @@
 node ('beaware-jenkins-slave') {
     stage('Download Latest') {
-        git(url: 'https://github.com/beaware-project/image-analysis.git', branch: 'master')
+        git(url: 'https://github.com/beaware-project/drone-analysis.git', branch: 'master')
         sh 'git submodule init'
         sh 'git submodule update'
     }
 
     stage ('Build docker image') {
-	    sh 'docker build -t beaware/image-analysis:${BUILD_NUMBER} --pull=true .'
+	    sh 'docker build -t beaware/drone-analysis:${BUILD_NUMBER} --pull=true .'
     }
 
     stage ('Push docker image') {
         withDockerRegistry([credentialsId: 'dockerhub-credentials']) {
-		sh 'docker push beaware/image-analysis:${BUILD_NUMBER}'
+		sh 'docker push beaware/drone-analysis:${BUILD_NUMBER}'
         }
     }
 
@@ -23,7 +23,7 @@ node ('beaware-jenkins-slave') {
 
     stage ('Print-deploy logs') {
         sh 'sleep 120'
-        sh 'kubectl -n prod logs deploy/image-analysis -c image-analysis'
+        sh 'kubectl -n prod logs deploy/drone-analysis -c drone-analysis'
     }
 		
 }
