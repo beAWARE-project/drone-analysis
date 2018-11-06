@@ -2,11 +2,11 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: image-analysis
-  name: image-analysis
+    app: drone-analysis
+  name: drone-analysis
 spec:
   selector:
-    app: image-analysis
+    app: drone-analysis
   ports:
   - name: http
     port: 7788
